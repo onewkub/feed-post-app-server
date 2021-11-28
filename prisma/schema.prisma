@@ -1,0 +1,59 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model user {
+  userId    String       @id @default(uuid())
+  username  String       @unique
+  password  String
+  email     String       @unique
+  createdOn DateTime     @default(now())
+  profile   userProfile?
+  comment   comment[]
+  post      post[]
+  following userFollow[] @relation(name: "following")
+  follower  userFollow[] @relation(name: "follower")
+}
+
+model userProfile {
+  userProfileId String  @id @default(uuid())
+  userId        String  @unique
+  user          user    @relation(fields: [userId], references: [userId])
+  history       String?
+  website       String?
+  profileImage  String?
+  bannerImage   String?
+}
+
+model userFollow {
+  userFollowId  String @id @default(uuid())
+  userId        String
+  user          user   @relation(name: "following", fields: [userId], references: [userId])
+  followingId   String
+  followingUser user   @relation(name: "follower", fields: [userId], references: [userId])
+}
+
+model post {
+  postId        String    @id @default(uuid())
+  body          String
+  createdUserId String
+  createduser   user      @relation(fields: [createdUserId], references: [userId])
+  comment       comment[]
+}
+
+model comment {
+  commentId     String @id @default(uuid())
+  body          String
+  postId        String
+  post          post   @relation(fields: [postId], references: [postId])
+  createdUserId String
+  createdUser   user   @relation(fields: [createdUserId], references: [userId])
+}
