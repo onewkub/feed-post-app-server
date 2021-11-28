@@ -7,7 +7,6 @@ import { isNil } from "lodash";
 import passport from "../utils/passport";
 
 const login = async (req: Request, res: Response) => {
-  console.log(req.user);
   passport.authenticate("local", (error, user) => {
     if (!isNil(user)) {
       return res.status(200).json(user);
@@ -35,9 +34,14 @@ const register = async (req: Request, res: Response) => {
   }
 };
 
+const verifyToken = async (req: Request, res: Response) => {
+  res.status(200).json(req.user);
+};
+
 const authController = {
   register,
   login,
+  verifyToken
 };
 
 export default authController;

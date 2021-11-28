@@ -1,6 +1,10 @@
 import passport from "passport";
 import bcrypt from "bcrypt";
-
+import {
+  Strategy as JwtStrategy,
+  ExtractJwt,
+  StrategyOptions as JwtStrategyOption,
+} from "passport-jwt";
 import { Strategy as LocalStrategy } from "passport-local";
 import prisma from "./prisma";
 import { isNil } from "lodash";
@@ -26,7 +30,7 @@ passport.use(
         const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "30d" });
         return done(null, {
           ...payload,
-          token,
+          token: `bearer ${token}`,
         });
       } else {
         return done(new Error("Username or Password are wrong."));
@@ -34,6 +38,17 @@ passport.use(
     } else {
       return done(new Error("Username or Password are wrong."));
     }
+  })
+);
+
+const opts: JwtStrategyOption = {
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  secretOrKey: JWT_SECRET,
+};
+
+passport.use(
+  new JwtStrategy(opts, (jwt_payload, done) => {
+    done(null, jwt_payload);
   })
 );
 
