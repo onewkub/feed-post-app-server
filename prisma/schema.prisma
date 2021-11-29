@@ -19,18 +19,22 @@ model user {
   profile   userProfile?
   comment   comment[]
   post      post[]
-  following userFollow[] @relation(name: "following")
   follower  userFollow[] @relation(name: "follower")
+  following userFollow[] @relation(name: "following")
+  lovePost  lovePost[]
+  rePost    rePost[]
 }
 
 model userProfile {
-  userProfileId String  @id @default(uuid())
-  userId        String  @unique
-  user          user    @relation(fields: [userId], references: [userId])
+  userProfileId String    @id @default(uuid())
+  userId        String    @unique
+  user          user      @relation(fields: [userId], references: [userId])
+  name          String
   history       String?
   website       String?
   profileImage  String?
   bannerImage   String?
+  updateAt      DateTime? @updatedAt
 }
 
 model userFollow {
@@ -38,22 +42,63 @@ model userFollow {
   userId        String
   user          user   @relation(name: "following", fields: [userId], references: [userId])
   followingId   String
-  followingUser user   @relation(name: "follower", fields: [userId], references: [userId])
+  followingUser user   @relation(name: "follower", fields: [followingId], references: [userId])
+
+  @@unique([userId, followingId])
 }
 
 model post {
-  postId        String    @id @default(uuid())
-  body          String
+  postId        String      @id @default(uuid())
+  content       String
   createdUserId String
-  createduser   user      @relation(fields: [createdUserId], references: [userId])
+  createdUser   user        @relation(fields: [createdUserId], references: [userId])
   comment       comment[]
+  postImage     postImage[]
+  isDelete      Boolean     @default(false)
+  createdOn     DateTime    @default(now())
+  deleteOn      DateTime?
+  updateAt      DateTime?   @updatedAt
+
+
+  lovePost lovePost[]
+  rePost   rePost[]
+}
+
+model postImage {
+  imageId String @id @default(uuid())
+  data    String
+  postId  String
+  userId  String
+  order   Int?
+  post    post   @relation(fields: [postId], references: [postId])
 }
 
 model comment {
-  commentId     String @id @default(uuid())
-  body          String
+  commentId     String   @id @default(uuid())
+  comment       String
   postId        String
-  post          post   @relation(fields: [postId], references: [postId])
+  post          post     @relation(fields: [postId], references: [postId])
   createdUserId String
-  createdUser   user   @relation(fields: [createdUserId], references: [userId])
+  createdUser   user     @relation(fields: [createdUserId], references: [userId])
+  createdOn     DateTime @default(now())
+}
+
+model lovePost {
+  lovePostId String @id @default(uuid())
+  postId     String
+  post       post   @relation(fields: [postId], references: [postId])
+  userId     String
+  user       user   @relation(fields: [userId], references: [userId])
+
+  @@unique([postId, userId])
+}
+
+model rePost {
+  rePostId String @id @default(uuid())
+  postId   String
+  post     post   @relation(fields: [postId], references: [postId])
+  userId   String
+  user     user   @relation(fields: [userId], references: [userId])
+
+  @@unique([postId, userId])
 }
