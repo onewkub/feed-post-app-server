@@ -12,6 +12,7 @@ import jwt from "jsonwebtoken";
 
 const JWT_SECRET = "THIS_JWT_SECRET";
 
+// สร้าง passport สำหรับ Authentication ผู้ใช้ด้วย Username และ Password
 passport.use(
   new LocalStrategy(async (username, password, done) => {
     const user = await prisma.user.findFirst({
@@ -41,11 +42,12 @@ passport.use(
   })
 );
 
+
+// สร้าง passport สำหรับ Authentication ผู้ใช้ด้วย Token ที่ให้
 const opts: JwtStrategyOption = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
   secretOrKey: JWT_SECRET,
 };
-
 passport.use(
   new JwtStrategy(opts, (jwt_payload, done) => {
     done(null, jwt_payload);

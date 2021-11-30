@@ -4,7 +4,7 @@ import commentForm from "../models/commentForm";
 import commentService from "../service/comment.service";
 import { BAD_REQUEST, INTERNAL_ERROR, OK } from "../utils/reponseType";
 
-
+// controller สำหรับ สร้าง comment
 const createComment = async (req: Request, res: Response) => {
   const user = req.user as user;
   const postId = req.params.postId as string;
@@ -18,6 +18,7 @@ const createComment = async (req: Request, res: Response) => {
   }
 };
 
+// controller สำหรับ update comment
 const updateComment = async (req: Request, res: Response) => {
   const user = req.user as user;
   const commentId = req.params.commentId as string;

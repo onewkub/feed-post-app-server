@@ -9,7 +9,7 @@ datasource db {
   provider = "sqlite"
   url      = "file:./dev.db"
 }
-
+// ตารางเก็บข้อมูลสำหรับ User
 model user {
   userId    String       @id @default(uuid())
   username  String       @unique
@@ -25,6 +25,7 @@ model user {
   rePost    rePost[]
 }
 
+// ตารางเก็บข้อมูล Profile ของ User
 model userProfile {
   userProfileId String    @id @default(uuid())
   userId        String    @unique
@@ -37,6 +38,7 @@ model userProfile {
   updateAt      DateTime? @updatedAt
 }
 
+// ตารางเก็บข้อมูล ความสัมพันธ์ุของการติดตาม ระหว่าง User และ User
 model userFollow {
   userFollowId  String @id @default(uuid())
   userId        String
@@ -47,6 +49,7 @@ model userFollow {
   @@unique([userId, followingId])
 }
 
+// ตารางเก็บข้อมูล Post ที่ User Post ทั้งหมด
 model post {
   postId        String      @id @default(uuid())
   content       String
@@ -64,6 +67,7 @@ model post {
   rePost   rePost[]
 }
 
+// ตารางเก็บข้อมูล รูปภาพของระบบ
 model postImage {
   imageId String @id @default(uuid())
   data    String
@@ -72,7 +76,7 @@ model postImage {
   order   Int?
   post    post   @relation(fields: [postId], references: [postId])
 }
-
+// ตารางเก็บข้อมูล comment ทั้งหมดมีความสัมพันธ์กับ Post
 model comment {
   commentId     String   @id @default(uuid())
   comment       String
@@ -83,6 +87,7 @@ model comment {
   createdOn     DateTime @default(now())
 }
 
+// ตารางเก็บข้อมูล ความสัมพันธ์ุการกด Love ต่อ Post
 model lovePost {
   lovePostId String @id @default(uuid())
   postId     String
@@ -93,6 +98,7 @@ model lovePost {
   @@unique([postId, userId])
 }
 
+// ตารางเก็บข้อมูล ความสัมพันธ์ุการกด RePost ต่อ Post
 model rePost {
   rePostId String @id @default(uuid())
   postId   String

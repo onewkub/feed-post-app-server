@@ -38,7 +38,7 @@ const getPost = async (postId: string) => {
     throw error;
   }
 };
-
+// Service สำหรับสร้าง Post โดยรับ Parameter เป็น postForm และ userId ของผู้สร้าง 
 const createPost = async (postForm: PostForm, userId: string) => {
   try {
     const content = postForm.content;
@@ -71,6 +71,7 @@ const createPost = async (postForm: PostForm, userId: string) => {
   }
 };
 
+// Service สำหรับ Update Post โดยรับ Parameter เป็น postForm และ userId ของผู้สร้าง 
 const updatePost = async (
   postId: string,
   postFrom: PostForm,
@@ -99,6 +100,7 @@ const updatePost = async (
   }
 };
 
+// Service สำหรับ กด Love ต่อโพสรับ Parameter เป็น userId และ postId
 const lovePost = async (userId: string, postId: string) => {
   try {
     const result = await prisma.lovePost.create({ data: { userId, postId } });
@@ -108,6 +110,7 @@ const lovePost = async (userId: string, postId: string) => {
   }
 };
 
+// Service สำหรับ กด UnLove ต่อโพสรับ Parameter เป็น userId และ postId
 const unLovePost = async (userId: string, postId: string) => {
   try {
     await prisma.lovePost.delete({
@@ -123,6 +126,8 @@ const unLovePost = async (userId: string, postId: string) => {
   }
 };
 
+
+// Service สำหรับกด Repost ต่อโพสรับ Parameter เป็น userId และ postId
 const rePost = async (userId: string, postId: string) => {
   try {
     const result = await prisma.rePost.create({ data: { userId, postId } });
@@ -131,6 +136,7 @@ const rePost = async (userId: string, postId: string) => {
     throw error;
   }
 };
+// Service สำหรับกด Un Repost ต่อโพสรับ Parameter เป็น userId และ postId
 
 const unRePost = async (userId: string, postId: string) => {
   try {

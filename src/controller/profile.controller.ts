@@ -4,6 +4,7 @@ import ProfileForm from "../models/profileForm";
 import profileService from "../service/profile.service";
 import { INTERNAL_ERROR, OK } from "../utils/reponseType";
 
+// controller สำหรับรับ Request เรียก Profile User คนปัจจุบัน
 const getCurrentUserProfile = async (req: Request, res: Response) => {
   try {
     const user = req.user as user;
@@ -13,7 +14,7 @@ const getCurrentUserProfile = async (req: Request, res: Response) => {
     INTERNAL_ERROR(res);
   }
 };
-
+// controller สำหรับรับ Request เรียก Profile User ตาม userId
 const getProfile = async (req: Request, res: Response) => {
   try {
     const userId = req.params.userId as string;
@@ -23,6 +24,8 @@ const getProfile = async (req: Request, res: Response) => {
     INTERNAL_ERROR(res);
   }
 };
+
+// controller สำหรับรับ Request สร้าง และ update profile
 
 const createOrUpdateProfile = async (req: Request, res: Response) => {
   try {

@@ -1,6 +1,7 @@
 import { isNil } from "lodash";
 import prisma from "../utils/prisma";
 
+// Service สำหรับ สร้าง comment โดยรับ userId, postId และ comment
 const createComment = async (
   userId: string,
   postId: string,
@@ -17,6 +18,8 @@ const createComment = async (
   }
 };
 
+
+// Service สำหรับอัพเดท comment โดยรับ userId, postId และ comment
 const updateComment = async (
   userId: string,
   commentId: string,

@@ -7,6 +7,7 @@ import { isNil } from "lodash";
 import passport from "../utils/passport";
 import { BAD_REQUEST, INTERNAL_ERROR, OK } from "../utils/reponseType";
 
+// Controller สำหรับ รับ Request Login
 const login = async (req: Request, res: Response) => {
   passport.authenticate("local", (error, user) => {
     if (!isNil(user)) {
@@ -17,6 +18,7 @@ const login = async (req: Request, res: Response) => {
   })(req, res);
 };
 
+// Controller สำหรับ รับ Request Register
 const register = async (req: Request, res: Response) => {
   try {
     const registerForm = req.body as RegisterForm;

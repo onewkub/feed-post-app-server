@@ -1,5 +1,7 @@
 import { Response } from "express";
 
+// Helper เล็กๆ ช่วยให้การเขียน Code สั้นลงนิดหน่อย
+
 export const OK = (res: Response, payload: any) => {
   return res.status(200).json(payload);
 };

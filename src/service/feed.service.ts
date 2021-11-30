@@ -1,6 +1,8 @@
 import { isNil } from "lodash";
 import prisma from "../utils/prisma";
 
+// Service เรียก Feed ทั้งหมดที่ผู้ใช้ต้องเห็น
+// มี Condition คือ โพสที่ถูก Love, และ Repost ของ User ทั้งหมดที่ User ปัจจุบันติดตาม
 const getFeeds = async (userId: string) => {
   try {
     const user = await prisma.user.findUnique({
@@ -10,7 +12,7 @@ const getFeeds = async (userId: string) => {
     if (!isNil(user)) {
       const followingUsers = user.following.map((i) => i.followingId);
       const meAndFollowing = [userId, ...followingUsers];
-      console.log(meAndFollowing)
+      console.log(meAndFollowing);
       const result = await prisma.post.findMany({
         where: {
           OR: [

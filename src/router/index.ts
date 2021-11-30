@@ -1,23 +1,13 @@
 import { Router } from "express";
 import authController from "../controller/auth.controller";
-import basicController from "../controller/basic.controller";
 import commentController from "../controller/comment.controller";
 import feedController from "../controller/feed.controller";
 import followController from "../controller/follow.controller";
 import postController from "../controller/post.controller";
 import profileController from "../controller/profile.controller";
-import validateQueryParams from "../middleware/example.middle";
 import verifyToken from "../middleware/verifyToken.middle";
 
 const router = Router();
-//* Basic
-router.get("/hello-world", basicController.helloWorld);
-
-router.get(
-  "/basic-middleware",
-  validateQueryParams,
-  basicController.basicMiddleWare
-);
 
 //* Auth
 router.post("/register", authController.register);
