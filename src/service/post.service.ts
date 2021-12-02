@@ -40,35 +40,7 @@ const getPost = async (postId: string) => {
 };
 // Service สำหรับสร้าง Post โดยรับ Parameter เป็น postForm และ userId ของผู้สร้าง 
 const createPost = async (postForm: PostForm, userId: string) => {
-  try {
-    const content = postForm.content;
-    const images = postForm.images || [];
-    const contentResult = await prisma.post.create({
-      data: {
-        content,
-        createdUserId: userId,
-      },
-    });
-    const imageResult = await Promise.all(
-      images.map((image) => {
-        return prisma.postImage.create({
-          data: {
-            userId,
-            postId: contentResult.postId,
-            data: image.data,
-            order: image.order,
-          },
-        });
-      })
-    );
 
-    return {
-      ...contentResult,
-      postImage: [...imageResult],
-    };
-  } catch (error) {
-    throw error;
-  }
 };
 
 // Service สำหรับ Update Post โดยรับ Parameter เป็น postForm และ userId ของผู้สร้าง 
@@ -77,80 +49,28 @@ const updatePost = async (
   postFrom: PostForm,
   userId: string
 ) => {
-  try {
-    const content = postFrom.content;
 
-    const isExisting = await prisma.post.findFirst({
-      where: { postId, createdUserId: userId },
-    });
-
-    if (isNil(isExisting)) {
-      throw new Error("can't not find your post for updating.");
-    } else {
-      const result = prisma.post.update({
-        data: { ...isExisting, content },
-        where: { postId },
-      });
-      return result;
-    }
-  } catch (e) {
-    const error = e as any;
-    console.error(error.message);
-    throw error;
-  }
 };
 
 // Service สำหรับ กด Love ต่อโพสรับ Parameter เป็น userId และ postId
 const lovePost = async (userId: string, postId: string) => {
-  try {
-    const result = await prisma.lovePost.create({ data: { userId, postId } });
-    return result;
-  } catch (error) {
-    throw error;
-  }
+
 };
 
 // Service สำหรับ กด UnLove ต่อโพสรับ Parameter เป็น userId และ postId
 const unLovePost = async (userId: string, postId: string) => {
-  try {
-    await prisma.lovePost.delete({
-      where: {
-        postId_userId: {
-          userId,
-          postId,
-        },
-      },
-    });
-  } catch (error) {
-    throw error;
-  }
+
 };
 
 
 // Service สำหรับกด Repost ต่อโพสรับ Parameter เป็น userId และ postId
 const rePost = async (userId: string, postId: string) => {
-  try {
-    const result = await prisma.rePost.create({ data: { userId, postId } });
-    return result;
-  } catch (error) {
-    throw error;
-  }
+
 };
 // Service สำหรับกด Un Repost ต่อโพสรับ Parameter เป็น userId และ postId
 
 const unRePost = async (userId: string, postId: string) => {
-  try {
-    await prisma.rePost.delete({
-      where: {
-        postId_userId: {
-          userId,
-          postId,
-        },
-      },
-    });
-  } catch (error) {
-    throw error;
-  }
+
 };
 
 const postService = {

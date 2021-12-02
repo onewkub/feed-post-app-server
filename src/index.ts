@@ -9,9 +9,7 @@ const app = express();
 // ใส่ Middleware 
 // ได้แก่ express.urlencoded, express.json ไว้สำหรับรับ payload ที่เป็น Json
 // morgan ใช้สำหรับ log สถามนะของ Request ที่เข้ามาใน Server
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-app.use(morgan("tiny"));
+
 
 app.use("/api", router);
 

@@ -7,15 +7,7 @@ const createComment = async (
   postId: string,
   comment: string
 ) => {
-  try {
-    const result = await prisma.comment.create({
-      data: { createdUserId: userId, postId, comment },
-    });
-    return result;
-  } catch (error) {
-    console.log(error)
-    throw error;
-  }
+
 };
 
 
@@ -25,25 +17,7 @@ const updateComment = async (
   commentId: string,
   comment: string
 ) => {
-  try {
-    const existingComment = await prisma.comment.findFirst({
-      where: {
-        createdUserId: userId,
-        commentId,
-      },
-    });
-    if (!isNil(existingComment)) {
-      const result = await prisma.comment.update({
-        where: { commentId },
-        data: { ...existingComment, comment },
-      });
-      return result;
-    } else {
-      throw new Error("Can't find comment with giving commentId");
-    }
-  } catch (error) {
-    throw error;
-  }
+
 };
 
 const commentService = {

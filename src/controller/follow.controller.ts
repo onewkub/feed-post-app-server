@@ -7,24 +7,7 @@ import { BAD_REQUEST, INTERNAL_ERROR, OK } from "../utils/reponseType";
 // controller สำหรับรับ Request การ Follow ของ User
 
 const followUser = async (req: Request, res: Response) => {
-  const user = req.user as user;
-  const target = req.params.userId;
-  if (user.userId === target) {
-    return BAD_REQUEST(
-      res,
-      "Are you kidding me do you want to follow yourself?"
-    );
-  }
-  try {
-    const result = await followingService.followUser(user.userId, target);
-    OK(res, result);
-  } catch (error) {
-    if (error instanceof PrismaClientKnownRequestError) {
-      BAD_REQUEST(res, "Prisma Error");
-    } else {
-      INTERNAL_ERROR(res);
-    }
-  }
+
 };
 
 // controller สำหรับรับ Request การ UnFollow ของ User

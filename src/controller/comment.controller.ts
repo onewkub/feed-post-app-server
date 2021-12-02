@@ -6,37 +6,12 @@ import { BAD_REQUEST, INTERNAL_ERROR, OK } from "../utils/reponseType";
 
 // controller สำหรับ สร้าง comment
 const createComment = async (req: Request, res: Response) => {
-  const user = req.user as user;
-  const postId = req.params.postId as string;
-  const { comment } = req.body as commentForm;
 
-  try {
-    const result = await commentService.createComment(user.userId, postId, comment);
-    OK(res, result);
-  } catch (error) {
-    INTERNAL_ERROR(res);
-  }
 };
 
 // controller สำหรับ update comment
 const updateComment = async (req: Request, res: Response) => {
-  const user = req.user as user;
-  const commentId = req.params.commentId as string;
-  const { comment } = req.body as commentForm;
-  try {
-    const result = await commentService.updateComment(
-      user.userId,
-      commentId,
-      comment
-    );
-    OK(res, result);
-  } catch (error) {
-    if (error instanceof Error) {
-      BAD_REQUEST(res, error.message);
-    } else {
-      INTERNAL_ERROR(res);
-    }
-  }
+
 };
 
 const commentController = { createComment, updateComment };
